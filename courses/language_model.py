@@ -4,6 +4,7 @@ import numpy as np
 from torch.nn.utils import clip_grad_norm_
 from utils.data_utils import Dictionary, Corpus
 
+
 # Device configuration
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
