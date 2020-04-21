@@ -6,78 +6,78 @@ import torchvision.transforms as transforms
 
 
 # ================================================================== #
-#                         Table of Contents                          #
+#                               目录                                 #
 # ================================================================== #
 
-# 1. Basic autograd example 1               (Line 25 to 39)
-# 2. Basic autograd example 2               (Line 46 to 83)
-# 3. Loading data from numpy                (Line 90 to 97)
-# 4. Input pipline                          (Line 104 to 129)
+# 1. 自动求导示例 1               (Line 25 to 39)
+# 2. 自动求导示例 2               (Line 46 to 83)
+# 3. 从Numpy载入数据                (Line 90 to 97)
+# 4. 输入                          (Line 104 to 129)
 # 5. Input pipline for custom dataset       (Line 136 to 156)
 # 6. Pretrained model                       (Line 163 to 176)
 # 7. Save and load model                    (Line 183 to 189)
 
 
 # ================================================================== #
-#                     1. Basic autograd example 1                    #
+#                     1. 自动求导示例 1                               #
 # ================================================================== #
 
-# Create tensors.
+# 创建张量.
 x = torch.tensor(1., requires_grad=True)
 w = torch.tensor(2., requires_grad=True)
 b = torch.tensor(3., requires_grad=True)
 
-# Build a computational graph.
+# 创建计算图
 y = w * x + b    # y = 2 * x + 3
 
-# Compute gradients.
+# 计算梯度
 y.backward()
 
-# Print out the gradients.
+# 输出梯度
 print(x.grad)    # x.grad = 2
 print(w.grad)    # w.grad = 1
 print(b.grad)    # b.grad = 1
 
 
 # ================================================================== #
-#                    2. Basic autograd example 2                     #
+#                    2. 自动求导示例 2                                #
 # ================================================================== #
 
-# Create tensors of shape (10, 3) and (10, 2).
+# 创建形状为(10, 3)和(10, 2)的张量
 x = torch.randn(10, 3)
 y = torch.randn(10, 2)
 
-# Build a fully connected layer.
+# 创建全连接层
 linear = nn.Linear(3, 2)
 print ('w: ', linear.weight)
 print ('b: ', linear.bias)
 
-# Build loss function and optimizer.
+# 创建损失函数和优化器
 criterion = nn.MSELoss()
 optimizer = torch.optim.SGD(linear.parameters(), lr=0.01)
 
-# Forward pass.
+# 前向传播
 pred = linear(x)
 
-# Compute loss.
+# 计算损失
 loss = criterion(pred, y)
 print('loss: ', loss.item())
 
-# Backward pass.
+# 反向传播
 loss.backward()
 
-# Print out the gradients.
+# 输出梯度
 print ('dL/dw: ', linear.weight.grad)
 print ('dL/db: ', linear.bias.grad)
 
-# 1-step gradient descent.
+# 梯度下降
 optimizer.step()
 
-# You can also perform gradient descent at the low level.
+# 也可以在底层进行梯度下降
 # linear.weight.data.sub_(0.01 * linear.weight.grad.data)
 # linear.bias.data.sub_(0.01 * linear.bias.grad.data)
 
-# Print out the loss after 1-step gradient descent.
+# 梯度下降后的输出
 pred = linear(x)
 loss = criterion(pred, y)
 print('loss after 1 step optimization: ', loss.item())
@@ -87,13 +87,13 @@ print('loss after 1 step optimization: ', loss.item())
 #                     3. Loading data from numpy                     #
 # ================================================================== #
 
-# Create a numpy array.
+# 创建Numpy数组
 x = np.array([[1, 2], [3, 4]])
 
-# Convert the numpy array to a torch tensor.
+# Numpy数组转为张量
 y = torch.from_numpy(x)
 
-# Convert the torch tensor to a numpy array.
+# 张量转为Numpy数组
 z = y.numpy()
 
 
@@ -101,31 +101,31 @@ z = y.numpy()
 #                         4. Input pipeline                           #
 # ================================================================== #
 
-# Download and construct CIFAR-10 dataset.
+# 下载并构建CIFAR-10数据集
 train_dataset = torchvision.datasets.CIFAR10(root='../../data/',
                                              train=True,
                                              transform=transforms.ToTensor(),
                                              download=True)
 
-# Fetch one data pair (read data from disk).
+# 从硬盘读取数据
 image, label = train_dataset[0]
 print (image.size())
 print (label)
 
-# Data loader (this provides queues and threads in a very simple way).
+# 数据载入器
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=64,
                                            shuffle=True)
 
-# When iteration starts, queue and thread start to load data from files.
+# 当迭代开始，队列和线程开始从文件载入数据
 data_iter = iter(train_loader)
 
-# Mini-batch images and labels.
+# 小批量图像和标签
 images, labels = data_iter.next()
 
-# Actual usage of the data loader is as below.
+# 数据载入器的使用如下
 for images, labels in train_loader:
-    # Training code should be written here.
+    # 训练代码.
     pass
 
 
@@ -133,23 +133,23 @@ for images, labels in train_loader:
 #                5. Input pipeline for custom dataset                #
 # ================================================================== #
 
-# You should build your custom dataset as below.
+# 按如下方式构建自定义数据集
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self):
         # TODO
-        # 1. Initialize file paths or a list of file names.
+        # 1. 初始化文件路径或者文件名
         pass
     def __getitem__(self, index):
         # TODO
-        # 1. Read one data from file (e.g. using numpy.fromfile, PIL.Image.open).
-        # 2. Preprocess the data (e.g. torchvision.Transform).
-        # 3. Return a data pair (e.g. image and label).
+        # 1. 从文件读取数据 (使用numpy.fromfile, PIL.Image.open).
+        # 2. 预处理数据 (使用torchvision.Transform).
+        # 3. 返回数据(图像和标签).
         pass
     def __len__(self):
-        # You should change 0 to the total size of your dataset.
+        # 将0改为数据集的大小.
         return 0
 
-# You can then use the prebuilt data loader.
+# 使用预创建的数据载入器.
 custom_dataset = CustomDataset()
 train_loader = torch.utils.data.DataLoader(dataset=custom_dataset,
                                            batch_size=64,
@@ -160,17 +160,17 @@ train_loader = torch.utils.data.DataLoader(dataset=custom_dataset,
 #                        6. Pretrained model                         #
 # ================================================================== #
 
-# Download and load the pretrained ResNet-18.
+# 下载并载入ResNet-18模型.
 resnet = torchvision.models.resnet18(pretrained=True)
 
-# If you want to finetune only the top layer of the model, set as below.
+# 如果只需要微调或者迁移学习模型的高层
 for param in resnet.parameters():
     param.requires_grad = False
 
-# Replace the top layer for finetuning.
+# 替换高层用于微调模型或迁移学习
 resnet.fc = nn.Linear(resnet.fc.in_features, 100)  # 100 is an example.
 
-# Forward pass.
+# 前向传播
 images = torch.randn(64, 3, 224, 224)
 outputs = resnet(images)
 print (outputs.size())     # (64, 100)
@@ -180,10 +180,10 @@ print (outputs.size())     # (64, 100)
 #                      7. Save and load the model                    #
 # ================================================================== #
 
-# Save and load the entire model.
+# 保存和加载模型
 torch.save(resnet, 'model.ckpt')
 model = torch.load('model.ckpt')
 
-# Save and load only the model parameters (recommended).
+# 只保存和加载模型的参数(推荐)
 torch.save(resnet.state_dict(), 'params.ckpt')
 resnet.load_state_dict(torch.load('params.ckpt'))
