@@ -45,11 +45,11 @@ for epoch in range(num_epochs):
         # 改变图像形状 (batch_size, input_size)
         images = images.reshape(-1, input_size)
 
-        # 前向传播
+        # 前向计算
         outputs = model(images)
         loss = criterion(outputs, labels)
 
-        # 反向传播及优化
+        # 反向计算及优化
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()

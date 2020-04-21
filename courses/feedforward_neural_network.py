@@ -63,11 +63,11 @@ for epoch in range(num_epochs):
         images = images.reshape(-1, 28 * 28).to(device)
         labels = labels.to(device)
 
-        # 前向传播
+        # 前向计算
         outputs = model(images)
         loss = criterion(outputs, labels)
 
-        # 反向传播和优化
+        # 反向计算和优化
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()

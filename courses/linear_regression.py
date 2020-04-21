@@ -32,11 +32,11 @@ for epoch in range(num_epochs):
     inputs = torch.from_numpy(x_train)
     targets = torch.from_numpy(y_train)
 
-    # 前向传播
+    # 前向计算
     outputs = model(inputs)
     loss = criterion(outputs, targets)
 
-    # 反向传播及优化
+    # 反向计算及优化
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
