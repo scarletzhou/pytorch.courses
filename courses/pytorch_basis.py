@@ -22,7 +22,7 @@ import torchvision.transforms as transforms
 #                     1. 自动求导示例 1                               #
 # ================================================================== #
 
-# 创建张量.
+# 创建张量
 x = torch.tensor(1., requires_grad=True)
 w = torch.tensor(2., requires_grad=True)
 b = torch.tensor(3., requires_grad=True)
@@ -56,14 +56,14 @@ print ('b: ', linear.bias)
 criterion = nn.MSELoss()
 optimizer = torch.optim.SGD(linear.parameters(), lr=0.01)
 
-# 前向传播
+# 前向计算
 pred = linear(x)
 
 # 计算损失
 loss = criterion(pred, y)
 print('loss: ', loss.item())
 
-# 反向传播
+# 反向计算
 loss.backward()
 
 # 输出梯度
