@@ -3,6 +3,7 @@ import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
 
+
 # 设备配置 cpu or gpu
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
